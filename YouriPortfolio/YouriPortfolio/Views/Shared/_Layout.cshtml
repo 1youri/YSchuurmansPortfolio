@@ -4,13 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css"/>
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
 </head>
 <body>
-    <nav>
-        <div class="row">
+    <div id="navbarddiv" class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -18,41 +20,40 @@
                     <span class="icon-bar"></span>
 
                 </button>
+                @Html.ActionLink("Youri Schuurmans", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div
             <div class="navbar-collapse collapse">
-                <ul class="nav">
-                    <li><a href="#">Curriculum Vitae</a></li>
-                    <li class="drop">
-                    <a href="#">Projecten</a>
-                    <div class="dropdownContain">
-                        <div class="dropOut">
-                            <div class="triangle"></div>
-                            <ul>
-                                <li>DotNet C# / ASP.NET MVC</li>
-                                <li>Game Design</li>
-                                <li>HTML&CSS</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <li class="drop">
-                    <a href="#">Acc</a>
-                    <div class="dropdownContain">
-                        <div class="dropOut">
-                            <div class="triangle"></div>
-                            <ul>
-                                <li>DotNet C# / ASP.NET MVC</li>
-                                <li>Game Design</li>
-                                <li>HTML&CSS</li>
-                            </ul>
-                        </div>
-                    </div>
-                </ul>
-            </div>
+                <ul class="nav navbar-nav navbar-right">
+                    
+                    @Html.LiActionLink("Curriculum Vitae", "", "")
+                    @Html.LiActionLink("About Me", "", "")
 
-            <div class="col-xs-1 col-md-1"></div>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            Projecten
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            @Html.LiActionLink("DotNet C# / ASP.NET MVC", "", "")
+                            @Html.LiActionLink("Game Design", "", "")
+                            @Html.LiActionLink("HTML&CSS", "", "")
+                        </ul>
+                    </li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user" aria-hidden="false"></i>
+                            <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            @Html.LiActionLink("Login", "", "")
+                        </ul>
+                    </li>
+
+                </ul>
+
+            </div>
         </div>
-    </nav>
+    </div>
 
 
     @*@Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@

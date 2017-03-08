@@ -16,3 +16,42 @@ textarea {
     max-width: 280px;
 }
 
+/* #region Navigation Bar*/
+#navbarddiv.navbar-default .navbar-brand {
+    color: rgba(77, 77, 77, 1);
+}
+#navbarddiv.navbar-default {
+    font-size: 15px;
+    background-color: rgba(204, 236, 255, 1);
+    border-bottom-width: 1px;
+}
+#navbarddiv.navbar-default .navbar-nav>li>a {
+    color: rgba(79, 79, 79, 1);
+    background-color: rgba(204, 236, 255, 1);
+}
+#navbarddiv.navbar-default .navbar-nav>li>a:hover,
+#navbarddiv.navbar-default .navbar-nav>li>a:focus {
+    color: rgba(51, 51, 51, 1);
+    background-color: rgba(222, 242, 255, 1);
+}
+#navbarddiv.navbar-default .navbar-nav>.active>a,
+#navbarddiv.navbar-default .navbar-nav>.active>a:hover,
+#navbarddiv.navbar-default .navbar-nav>.active>a:focus {
+    color: rgba(85, 85, 85, 1);
+    background-color: rgba(240, 249, 255, 1);
+}
+#navbarddiv.navbar-default .navbar-toggle {
+    border-color: #5ca1d6;
+}
+#navbarddiv.navbar-default .navbar-toggle:hover,
+#navbarddiv.navbar-default .navbar-toggle:focus {
+    background-color: #5ca1d6;
+}
+#navbarddiv.navbar-default .navbar-toggle .icon-bar {
+    background-color: #5ca1d6;
+}
+#navbarddiv.navbar-default .navbar-toggle:hover .icon-bar,
+#navbarddiv.navbar-default .navbar-toggle:focus .icon-bar {
+    background-color: #ccecff;
+}
+/* #endregion */
