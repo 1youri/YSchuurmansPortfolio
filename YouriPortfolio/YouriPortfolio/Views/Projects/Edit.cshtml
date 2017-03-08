@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "ContentEdit";
+}
+<head>
+    <script src="~/Scripts/jquery.wysibb.min.js"></script>
+    <link href="~/Content/wbbtheme.css" rel="stylesheet" />
+</head>
+<script>
+    $(document).ready(function () {
+        var wbbOpt = {
+            buttons: "bold,italic,underline,|,img,link,code"
+        }
+        $("#editor").wysibb(wbbOpt);
+    });
+</script>
+<h2>ContentEdit</h2>
+<textarea id="editor"></textarea>
+
+
+

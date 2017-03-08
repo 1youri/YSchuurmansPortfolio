@@ -1,14 +1,24 @@
-﻿<!DOCTYPE html>
+﻿@using PCAuthLib
+@using YouriPortfolio.Models
+@{
+    User currentUser = Login.GetCurrentUser(HttpContext.Current);
+}
+
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - Youri Schuurmans</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/Site.css" rel="stylesheet" type="text/css"/>
-    <link href="~/Content/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="~/Content/Site.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/font-awesome.min.css" rel="stylesheet" type="text/css" />
 
     <script src="~/Scripts/modernizr-2.6.2.js"></script>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/main.js"></script>
 </head>
 <body>
     <div id="navbarddiv" class="navbar navbar-default navbar-fixed-top">
@@ -24,13 +34,14 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    
+
                     @Html.LiActionLink("Curriculum Vitae", "", "")
                     @Html.LiActionLink("About Me", "", "")
+                    @Html.LiActionLink("Projects", "Index", "Projects")
 
-                    <li class="dropdown">
+                    @*<li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            Projecten
+                            Projects
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
@@ -38,14 +49,22 @@
                             @Html.LiActionLink("Game Design", "", "")
                             @Html.LiActionLink("HTML&CSS", "", "")
                         </ul>
-                    </li>
+                    </li>*@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                             <i class="fa fa-user" aria-hidden="false"></i>
                             <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            @Html.LiActionLink("Login", "", "")
+                            @if (currentUser.ID > 0)
+                            {
+                                <li class="text-center">@currentUser.Username</li>
+                                @Html.LiActionLink("Logout", "Logout", "Login")
+                            }
+                            else
+                            {
+                                @Html.LiActionLink("Login", "Index", "Login")
+                            }
                         </ul>
                     </li>
 
@@ -61,13 +80,12 @@
 
     <div class="container body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        <br/>
+        <footer class="text-right">
+            <p>&copy; @DateTime.Now.Year - Youri Schuurmans</p>
         </footer>
     </div>
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
+    
 </body>
 </html>
