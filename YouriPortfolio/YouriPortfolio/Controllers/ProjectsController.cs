@@ -33,7 +33,7 @@ namespace YouriPortfolio.Controllers
         {
 
             ProjectViewModel viewModel = new ProjectViewModel();
-            if (ID < 0) ID = ID*-1;
+            if (ID < 0) ID = ID * -1;
             Content content = ContentRepo.GetContent(ID);
             if (content != null)
             {
@@ -46,7 +46,14 @@ namespace YouriPortfolio.Controllers
 
         public ActionResult Edit(int ID = 0)
         {
-            return View();
+            ProjectViewModel viewModel = new ProjectViewModel();
+            viewModel.Project.ContentText = "";
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult Edit(ProjectViewModel viewModel)
+        {
+            return View(viewModel);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿
+﻿@model YouriPortfolio.Models.ViewModels.ProjectViewModel
 @{
     ViewBag.Title = "ContentEdit";
 }
@@ -11,11 +11,27 @@
         var wbbOpt = {
             buttons: "bold,italic,underline,|,img,link,code"
         }
-        $("#editor").wysibb(wbbOpt);
+        $("#Project_ContentText").wysibb(wbbOpt);
     });
 </script>
-<h2>ContentEdit</h2>
-<textarea id="editor"></textarea>
+
+
+<h2>Project Edit Page</h2>
+@using (Html.BeginForm("Edit", "Projects", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <h3>Title</h3>
+    @Html.EditorFor(model=>model.Project.Title)
+
+    <h3>Short Description</h3>
+    @Html.TextAreaFor(model => model.Project.ShortContent)
+
+    <h3>Full Description</h3>
+    @Html.TextAreaFor(model => model.Project.ContentText)
+    
+    <input type="submit" value="Save" class="btn btn-primary" />
+}
+<textarea>@Model.Project.ContentText</textarea>
 
 
 
