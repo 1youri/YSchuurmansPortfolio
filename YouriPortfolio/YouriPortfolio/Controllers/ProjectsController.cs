@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 using YouriPortfolio.Logic;
 using YouriPortfolio.Models;
 using YouriPortfolio.Models.ViewModels;
@@ -53,7 +57,26 @@ namespace YouriPortfolio.Controllers
         [HttpPost]
         public ActionResult Edit(ProjectViewModel viewModel)
         {
+            Content project = viewModel.Project;
+
+            ContentRepo.UpdateContent(project);
+
             return View(viewModel);
+        }
+
+        [HttpPost]
+        public ActionResult UploadMultiple(IEnumerable<HttpPostedFileBase> files, ProjectViewModel viewModel)
+        {
+            if (!Directory.Exists(Server.MapPath("/uploads")))
+                Directory.CreateDirectory(Server.MapPath("/uploads"));
+            foreach (var file in files)
+            {
+                if (file != null && file.ContentLength > 0)
+                {
+                    file.SaveAs(Path.Combine(Server.MapPath("/uploads"), Guid.NewGuid() + Path.GetExtension(file.FileName)));
+                }
+            }
+            return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
         }
     }
 }

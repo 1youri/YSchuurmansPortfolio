@@ -25,6 +25,9 @@ namespace YouriPortfolio.Logic
             content.ContentText = ParseBBCode(content.ContentText);
         }
 
+
+
+
         private static void InitParser()
         {
             Parser = new BBCodeParser(new[]
