@@ -16,25 +16,6 @@
     });
 </script>
 
-
-<h2>Project Edit Page</h2>
-@using (Html.BeginForm("Edit", "Projects", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-    @Html.HiddenFor(model=>model.Project.ID)
-    <h3>Title</h3>
-    @Html.EditorFor(model => model.Project.Title)
-
-    <h3>Short Description</h3>
-    @Html.TextAreaFor(model => model.Project.ShortContent, new { @style = "min-height:100px" })
-
-    <h3>Full Description</h3>
-    @Html.TextAreaFor(model => model.Project.ContentText, new { @style = "min-height:200px" })
-    <input type="submit" value="Save" class="btn btn-primary" />
-}
-
-
-
 <script type="text/javascript">
     $(function () {
         if (window.FileReader != null) {
@@ -48,17 +29,47 @@
 </script>
 
 
-@using (Html.BeginForm("UploadMultiple", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
+<h2>Project Edit Page</h2>
+@using (Html.BeginForm("Edit", "Projects", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     @Html.HiddenFor(model => model.Project.ID)
-    <div id="multiple">
-        <input type="file" class="multiple" name="files" multiple />
-    </div>
-    <div id="single">
-        <input type="file" class="single" name="files" /><br />
-        <input type="file" class="single" name="files" /><br />
-        <input type="file" class="single" name="files" /><br />
-    </div>
-    <button class="btn btn-default">Upload</button>
+    <h3>Title</h3>
+    @Html.EditorFor(model => model.Project.Title)
+
+    <h3>Short Description</h3>
+    @Html.TextAreaFor(model => model.Project.ShortContent, new { @style = "min-height:100px" })
+
+    <h3>Full Description</h3>
+    @Html.TextAreaFor(model => model.Project.ContentText, new { @style = "min-height:200px" })
+    <input type="submit" value="Save" class="btn btn-primary" />
 }
+
+
+
+<h2>Visual content management</h2>
+
+<div class="row">
+    <div class="col-sm-6">
+        <h3>Upload Images</h3>
+        @using (Html.BeginForm("UploadMultiple", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Project.ID)
+            <div id="multiple">
+                <input type="file" class="multiple" name="files" multiple />
+            </div>
+            <div id="single">
+                <input type="file" class="single" name="files" /><br />
+                <input type="file" class="single" name="files" /><br />
+                <input type="file" class="single" name="files" /><br />
+            </div>
+            <button class="btn btn-default">Upload</button>
+        }
+    </div>
+    <div class="col-sm-6">
+        <h3>New Videos</h3>
+
+    </div>
+
+</div>

@@ -169,6 +169,7 @@
     <Compile Include="Logic\BBCode.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Content.cs" />
+    <Compile Include="Models\Image.cs" />
     <Compile Include="Models\ImageModel.cs" />
     <Compile Include="Models\ViewModels\ProjectListViewModel.cs" />
     <Compile Include="Models\ViewModels\ProjectViewModel.cs" />

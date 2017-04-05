@@ -25,7 +25,7 @@ namespace YouriPortfolio.Models
         public string ShortContent { get; set; }
         public string ContentText { get; set; }
         public string HeaderIMG { get; set; }
-        public List<string> Images { get; set; }
+        public List<Image> Images { get; set; }
 
     }
 }
