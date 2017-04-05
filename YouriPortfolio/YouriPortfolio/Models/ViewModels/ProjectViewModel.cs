@@ -12,5 +12,6 @@ namespace YouriPortfolio.Models.ViewModels
             Project = new Content();
         }
         public Content Project { get; set; }
+        public string PostVideo { get; set; }
     }
 }

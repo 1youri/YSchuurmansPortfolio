@@ -51,7 +51,12 @@ namespace YouriPortfolio.Controllers
         public ActionResult Edit(int ID = 0)
         {
             ProjectViewModel viewModel = new ProjectViewModel();
-            viewModel.Project.ContentText = "";
+            Content content = ContentRepo.GetContent(ID);
+            if (content != null)
+            {
+                content.Visuals = VisualsRepo.GetVisuals(content.ID);
+                viewModel.Project = content;
+            }
             return View(viewModel);
         }
         [HttpPost]
@@ -73,9 +78,36 @@ namespace YouriPortfolio.Controllers
             {
                 if (file != null && file.ContentLength > 0)
                 {
-                    file.SaveAs(Path.Combine(Server.MapPath("/uploads"), Guid.NewGuid() + Path.GetExtension(file.FileName)));
+                    string filename = Guid.NewGuid() + Path.GetExtension(file.FileName);
+                    string path = Path.Combine(Server.MapPath("/uploads"), filename);
+                    file.SaveAs(path);
+                    VisualsRepo.InsertVisual(viewModel.Project.ID, "/uploads/" + filename, Visual.ContentTypes.Photo);
                 }
             }
+            return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
+        }
+
+        [HttpPost]
+        public ActionResult NewVideo(ProjectViewModel viewModel)
+        {
+            VisualsRepo.InsertVisual(viewModel.Project.ID, YoutubeIDExtract.ExtractVideoIdFromUri(new Uri(viewModel.PostVideo)), Visual.ContentTypes.Video);
+            return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
+        }
+
+        [HttpPost]
+        public ActionResult DeleteVisuals(ProjectViewModel viewModel)
+        {
+            List<int> toRemoveIDs = new List<int>();
+
+            foreach (Visual visual in viewModel.Project.Visuals)
+            {
+                if (visual.Selected)
+                {
+                    toRemoveIDs.Add(visual.ID);
+                }
+            }
+
+            VisualsRepo.RemoveImages(toRemoveIDs.ToArray());
             return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
         }
     }

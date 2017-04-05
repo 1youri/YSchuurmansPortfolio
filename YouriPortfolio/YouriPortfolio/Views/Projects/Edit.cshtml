@@ -1,4 +1,5 @@
-﻿@model YouriPortfolio.Models.ViewModels.ProjectViewModel
+﻿@using YouriPortfolio.Models
+@model YouriPortfolio.Models.ViewModels.ProjectViewModel
 @{
     ViewBag.Title = "ContentEdit";
 }
@@ -51,7 +52,7 @@
 
 <div class="row">
     <div class="col-sm-6">
-        <h3>Upload Images</h3>
+        <h3>Upload Visuals</h3>
         @using (Html.BeginForm("UploadMultiple", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
@@ -64,12 +65,57 @@
                 <input type="file" class="single" name="files" /><br />
                 <input type="file" class="single" name="files" /><br />
             </div>
-            <button class="btn btn-default">Upload</button>
+            <br/>
+            <button class="btn btn-success">Upload</button>
         }
     </div>
     <div class="col-sm-6">
         <h3>New Videos</h3>
+        @using (Html.BeginForm("NewVideo", "Projects", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Project.ID)
+            
+            @Html.TextBoxFor(model=>model.PostVideo);
 
+            <button class="btn btn-success">Upload</button>
+        }
     </div>
 
+</div>
+
+<div class="row">
+    
+    <div class="col-sm-12">
+        @using (Html.BeginForm("DeleteVisuals", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Project.ID)
+            <h3>Delete Visuals</h3>
+            <br/>
+            <br/>
+
+            for (int i = 0; i < Model.Project.Visuals.Count; i++)
+             {
+                 <div class="col-md-3 col-xs-6 VisualBlock">
+                     <div class=" text-center">
+
+                         @Html.HiddenFor(model => model.Project.Visuals[i].ID)
+                         @Html.CheckBoxFor(model => model.Project.Visuals[i].Selected)
+                         <br/>
+                         @if (Model.Project.Visuals[i].ContentType == Visual.ContentTypes.Photo)
+                         {
+                             <img src="@Model.Project.Visuals[i].Location"/>
+                         }
+                         else
+                         {
+                             <img src="//img.youtube.com/vi/@Model.Project.Visuals[i].Location/sddefault.jpg"/>
+                         }
+                     </div>
+                 </div>
+            }
+
+            <button class="btn btn-danger">Upload</button>
+        }
+    </div>
 </div>
