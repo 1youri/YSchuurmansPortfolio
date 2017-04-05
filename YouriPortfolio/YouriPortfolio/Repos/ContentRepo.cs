@@ -28,8 +28,7 @@ namespace YouriPortfolio.Repos
                         row.Get("ID"),
                         row.Get("Title"),
                         row.Get("ShortContentBlock"),
-                        row.Get("ContentBlock"),
-                        row.Get("HeaderIMG")));
+                        row.Get("ContentBlock")));
                 }
                 return returnList;
             }
@@ -50,21 +49,19 @@ namespace YouriPortfolio.Repos
                     result.Get("ID"),
                     result.Get("Title"),
                     result.Get("ShortContentBlock"),
-                    result.Get("ContentBlock"),
-                    result.Get("HeaderIMG"));
+                    result.Get("ContentBlock"));
             }
             return null;
         }
 
         public static bool UpdateContent(Content toEdit)
         {
-            string sql = "UPDATE CONTENT SET TITLE=?, ShortContentBlock=?, ContentBlock=?, HeaderIMG=? WHERE ID=?";
+            string sql = "UPDATE CONTENT SET TITLE=?, ShortContentBlock=?, ContentBlock=? WHERE ID=?";
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"Title", toEdit.Title},
                 {"ShortContentBlock", toEdit.ShortContent },
                 {"ContentBlock", toEdit.ContentText },
-                {"HeaderImg", toEdit.HeaderIMG },
                 {"id", toEdit.ID}
             };
             var result = DB.PFDB.UpdateQuery(sql, parameters);
@@ -79,8 +76,7 @@ namespace YouriPortfolio.Repos
             {
                 {"Title", toInsert.Title},
                 {"ShortContentBlock", toInsert.ShortContent },
-                {"ContentBlock", toInsert.ContentText },
-                {"HeaderImg", toInsert.HeaderIMG }
+                {"ContentBlock", toInsert.ContentText }
             };
             var result = DB.PFDB.InsertQuery(sql, parameters);
 

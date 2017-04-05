@@ -65,7 +65,7 @@
                 <input type="file" class="single" name="files" /><br />
                 <input type="file" class="single" name="files" /><br />
             </div>
-            <br/>
+            <br />
             <button class="btn btn-success">Upload</button>
         }
     </div>
@@ -75,8 +75,8 @@
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.Project.ID)
-            
-            @Html.TextBoxFor(model=>model.PostVideo);
+
+            @Html.TextBoxFor(model => model.PostVideo);
 
             <button class="btn btn-success">Upload</button>
         }
@@ -85,37 +85,39 @@
 </div>
 
 <div class="row">
-    
+
     <div class="col-sm-12">
         @using (Html.BeginForm("DeleteVisuals", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
         {
             @Html.AntiForgeryToken()
             @Html.HiddenFor(model => model.Project.ID)
             <h3>Delete Visuals</h3>
-            <br/>
-            <br/>
+            <br />
+            <br />
+            <div class="row">
+                @for (int i = 0; i < Model.Project.Visuals.Count; i++)
+                {
+                <div class="col-md-3 col-xs-6 ">
+                    <div class=" text-center VisualBlock">
 
-            for (int i = 0; i < Model.Project.Visuals.Count; i++)
-             {
-                 <div class="col-md-3 col-xs-6 VisualBlock">
-                     <div class=" text-center">
+                        @Html.HiddenFor(model => model.Project.Visuals[i].ID)
+                        @Html.HiddenFor(model => model.Project.Visuals[i].Location)
+                        @Html.CheckBoxFor(model => model.Project.Visuals[i].Selected)
+                        <br />
+                        @if (Model.Project.Visuals[i].ContentType == Visual.ContentTypes.Photo)
+                        {
+                            <img src="/uploads/@Model.Project.Visuals[i].Location" />
+                        }
+                        else
+                        {
+                            <img src="//img.youtube.com/vi/@Model.Project.Visuals[i].Location/sddefault.jpg" />
+                        }
+                    </div>
+                </div>
+                }
+            </div>
 
-                         @Html.HiddenFor(model => model.Project.Visuals[i].ID)
-                         @Html.CheckBoxFor(model => model.Project.Visuals[i].Selected)
-                         <br/>
-                         @if (Model.Project.Visuals[i].ContentType == Visual.ContentTypes.Photo)
-                         {
-                             <img src="@Model.Project.Visuals[i].Location"/>
-                         }
-                         else
-                         {
-                             <img src="//img.youtube.com/vi/@Model.Project.Visuals[i].Location/sddefault.jpg"/>
-                         }
-                     </div>
-                 </div>
-            }
-
-            <button class="btn btn-danger">Upload</button>
+            <button class="btn btn-danger">Delete</button>
         }
     </div>
 </div>

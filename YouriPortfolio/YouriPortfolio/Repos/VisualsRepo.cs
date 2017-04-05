@@ -11,7 +11,7 @@ namespace YouriPortfolio.Repos
     {
         public static List<Visual> GetVisuals(int contentID)
         {
-            string sql = "SELECT * FROM VISUAL WHERE ContentID=?";
+            string sql = "SELECT * FROM VISUAL WHERE ContentID=? ORDER BY CONTENTTYPE DESC";
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"id", contentID}

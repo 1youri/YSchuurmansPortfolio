@@ -117,6 +117,8 @@ select {
     border-radius: 4px;
     border-color:#303030;
     border-width: 2px;
+    border-style: solid;
+        padding:5px;
 }
 
     .VisualBlock img {

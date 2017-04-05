@@ -41,6 +41,7 @@ namespace YouriPortfolio.Controllers
             Content content = ContentRepo.GetContent(ID);
             if (content != null)
             {
+                content.Visuals = VisualsRepo.GetVisuals(content.ID);
                 BBCode.ParseContent(content);
             }
             viewModel.Project = content;
@@ -81,7 +82,7 @@ namespace YouriPortfolio.Controllers
                     string filename = Guid.NewGuid() + Path.GetExtension(file.FileName);
                     string path = Path.Combine(Server.MapPath("/uploads"), filename);
                     file.SaveAs(path);
-                    VisualsRepo.InsertVisual(viewModel.Project.ID, "/uploads/" + filename, Visual.ContentTypes.Photo);
+                    VisualsRepo.InsertVisual(viewModel.Project.ID, filename, Visual.ContentTypes.Photo);
                 }
             }
             return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
@@ -107,7 +108,21 @@ namespace YouriPortfolio.Controllers
                 }
             }
 
-            VisualsRepo.RemoveImages(toRemoveIDs.ToArray());
+            var succes = VisualsRepo.RemoveImages(toRemoveIDs.ToArray());
+
+            if (succes)
+            {
+                foreach (var visual in viewModel.Project.Visuals)
+                {
+                    if (visual.Selected && visual.ContentType == Visual.ContentTypes.Photo)
+                    {
+                        string folder = Server.MapPath("/uploads");
+                        string path = Path.Combine(folder, visual.Location);
+                        System.IO.File.Delete(path);
+                    }
+                }
+            }
+
             return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
         }
     }

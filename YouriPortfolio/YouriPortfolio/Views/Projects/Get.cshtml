@@ -1,12 +1,52 @@
-﻿@model YouriPortfolio.Models.ViewModels.ProjectViewModel
+﻿@using YouriPortfolio.Models
+@model YouriPortfolio.Models.ViewModels.ProjectViewModel
 @{
     ViewBag.Title = "Project";
 }
+
+<link href="~/Content/camera.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/cameraSettingCss.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="~/scripts/jquery.mobile.customized.min.js"></script>
+<script type="text/javascript" src="~/scripts/jquery.easing.1.3.js"></script>
+<script type="text/javascript" src="~/scripts/camera.min.js"></script> 
+
+<script>
+    jQuery(function () {
+
+        jQuery('#camera_wrap_3').camera({
+            height: '56%',
+            pagination: false,
+            thumbnails: true
+        });
+
+    });
+</script>
+
+
 <br />
+<br /><br /><br /><br /><br /><br /><br />
+<div class="fluid_container">
+    <div class="camera_wrap camera_emboss" id="camera_wrap_3">
+    @foreach (Visual visual in Model.Project.Visuals)
+    {
+        if (visual.ContentType == Visual.ContentTypes.Photo)
+        {
+            <div data-thumb="/uploads/@visual.Location" data-src="/uploads/@visual.Location">
+                <div style="position: absolute; top: 5%; left: 5%; background: #000; color: #fff; padding: 5px; width: 25%" class="fadeIn camera_effected"></div>
+            </div>
+        }
+        if (visual.ContentType == Visual.ContentTypes.Video)
+        {
+            <div data-thumb="//img.youtube.com/vi/@visual.Location/sddefault.jpg" data-src="//img.youtube.com/vi/@visual.Location/sddefault.jpg">
+                <iframe width="100%" height="100%" src="https://www.youtube.com/embed/@visual.Location" frameborder="0" allowfullscreen></iframe>
+            </div>
+        }
+    }
+    </div><!-- #camera_wrap_3 -->
+</div><!-- .fluid_container -->
+
 <div class="col-md-12 LGProjectBlock">
-    <div class="ProjectImage">
-        <img src="@Model.Project.HeaderIMG" alt="Project Visual" />
-    </div>
     <div class="ProjectTextBlock">
         <h2>@Html.Raw(Model.Project.Title)</h2>
 
