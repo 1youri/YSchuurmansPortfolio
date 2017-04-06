@@ -20,7 +20,12 @@ a {
 }
 
 .fluid_container {
-    margin: 0 auto;
-    max-width: 1000px;
-    width: 90%;
+    max-width: 1300px;
+    width: 90vw;
+    top: 50%;
+    flex-shrink: 0; /* Don't shrink it even if it's too wide */
+}
+.outer_container {
+    display: flex; /* Magic begins */
+    justify-content: center; /* Center contents */
 }

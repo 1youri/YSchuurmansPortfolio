@@ -30,6 +30,21 @@ namespace YouriPortfolio.Repos
             }
             return null;
         }
+        public static Visual RandomVisual(int contentID)
+        {
+            string sql = "SELECT * FROM VISUAL WHERE ContentID=? ORDER BY RAND() LIMIT 1";
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                {"id", contentID}
+            };
+            var row = DB.PFDB.GetOneResultQuery(sql, parameters);
+
+            if (row != null)
+            {
+                return new Visual(row.Get("ID").ToInt(), row.Get("Location"), (Visual.ContentTypes)row.Get("ContentType").ToInt());
+            }
+            return null;
+        }
         public static bool InsertVisual(int contentID, string imageLocation, Visual.ContentTypes type)
         {
             string sql = "INSERT INTO VISUAL(ContentID, Location, ContentType) VALUES(?, ?, ?)";
@@ -67,7 +82,7 @@ namespace YouriPortfolio.Repos
             }
             inString += ")";
 
-            string sql = "DELETE FROM VISUAL WHERE ID IN "+ inString;
+            string sql = "DELETE FROM VISUAL WHERE ID IN " + inString;
             var result = DB.PFDB.DeleteQuery(sql, null);
 
             return result;

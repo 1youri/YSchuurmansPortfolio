@@ -25,6 +25,8 @@ namespace YouriPortfolio.Controllers
                 foreach (Content contentItem in content)
                 {
                     BBCode.ParseContent(contentItem);
+
+                    contentItem.HeaderImg = VisualsRepo.RandomVisual(contentItem.ID);
                 }
             }
 
