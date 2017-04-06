@@ -1,7 +1,9 @@
-﻿@using YouriPortfolio.Models
+﻿@using PCAuthLib
+@using YouriPortfolio.Models
 @model YouriPortfolio.Models.ViewModels.ProjectViewModel
 @{
     ViewBag.Title = "Project";
+    var currentUser = Login.GetCurrentUser(HttpContext.Current);
 }
 
 <link href="~/Content/camera.css" rel="stylesheet" type="text/css" />
@@ -28,6 +30,13 @@
 
 <br />
 <br /><br />
+@if (currentUser.Permission >= PCAuthLib.User.PermissionGroup.ADMIN)
+{
+    <div class="row text-right">
+        @Html.ActionLink("Edit", "Edit", new {ID = Model.Project.ID}, new {@class = "btn btn-primary"})
+    </div>
+    <br/>
+}
 <div class="outer_container">
     <div class="fluid_container">
         <div class="camera_wrap camera_emboss" id="camera_wrap_3">
@@ -49,7 +58,7 @@
         </div><!-- #camera_wrap_3 -->
     </div><!-- .fluid_container -->
 </div>
-<div style="clear:both; display:block; height:100px"></div>
+<div style="clear:both; display:block; height:30px"></div>
 
 <div class="col-md-12 LGProjectBlock">
     <div class="ProjectTextBlock">

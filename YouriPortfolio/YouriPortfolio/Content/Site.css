@@ -111,9 +111,15 @@
     border-width: 2px;
     border-style: solid;
         padding:5px;
+    margin-bottom: 10px;
 }
 
     .VisualBlock img {
         max-width: 100%;
-        max-height: 300px;
+        height: 100px;
     }
+.ContentBlock {
+    background-color: #cccccc;
+    padding: 20px;
+    border-radius: 25px;
+}

@@ -185,6 +185,7 @@
     <Compile Include="Logic\YoutubeIDExtract.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Content.cs" />
+    <Compile Include="Models\ViewModels\DeleteModel.cs" />
     <Compile Include="Models\Visual.cs" />
     <Compile Include="Models\ViewModels\ProjectListViewModel.cs" />
     <Compile Include="Models\ViewModels\ProjectViewModel.cs" />
@@ -211,6 +212,7 @@
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Projects\Get.cshtml" />
     <Content Include="Views\Projects\Edit.cshtml" />
+    <Content Include="Views\Projects\DeleteProject.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

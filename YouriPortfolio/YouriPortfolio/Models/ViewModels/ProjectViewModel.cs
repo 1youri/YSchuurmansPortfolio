@@ -13,5 +13,6 @@ namespace YouriPortfolio.Models.ViewModels
         }
         public Content Project { get; set; }
         public string PostVideo { get; set; }
+        public string DeleteConfirmationName { get; set; }
     }
 }

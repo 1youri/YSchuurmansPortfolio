@@ -4,6 +4,7 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
+using PCAuthLib;
 using YouriPortfolio.Logic;
 using YouriPortfolio.Models;
 using YouriPortfolio.Models.ViewModels;
@@ -16,6 +17,8 @@ namespace YouriPortfolio.Controllers
         // GET: Project
         public ActionResult Index()
         {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
+
             ProjectListViewModel viewModel = new ProjectListViewModel();
 
             List<Content> content = ContentRepo.GetAllContent();
@@ -37,6 +40,7 @@ namespace YouriPortfolio.Controllers
         // GET: Project
         public ActionResult Get(int ID = 0)
         {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
 
             ProjectViewModel viewModel = new ProjectViewModel();
             if (ID < 0) ID = ID * -1;
@@ -53,6 +57,10 @@ namespace YouriPortfolio.Controllers
 
         public ActionResult Edit(int ID = 0)
         {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index","Login");
+
             ProjectViewModel viewModel = new ProjectViewModel();
             Content content = ContentRepo.GetContent(ID);
             if (content != null)
@@ -65,16 +73,33 @@ namespace YouriPortfolio.Controllers
         [HttpPost]
         public ActionResult Edit(ProjectViewModel viewModel)
         {
-            Content project = viewModel.Project;
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
-            ContentRepo.UpdateContent(project);
+            if (viewModel.Project.ID > 0)
+            {
+                Content project = viewModel.Project;
+                ContentRepo.UpdateContent(project);
+            }
+            else if (viewModel.Project.ID == 0)
+            {
+                if (ContentRepo.InsertContent(viewModel.Project))
+                {
+                    viewModel.Project = ContentRepo.GetLastContent();
+                }
+            }
 
-            return View(viewModel);
+            return RedirectToAction("Edit", new RouteValueDictionary() {{"ID", viewModel.Project.ID}});
         }
 
         [HttpPost]
         public ActionResult UploadMultiple(IEnumerable<HttpPostedFileBase> files, ProjectViewModel viewModel)
         {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
+
             if (!Directory.Exists(Server.MapPath("/uploads")))
                 Directory.CreateDirectory(Server.MapPath("/uploads"));
             foreach (var file in files)
@@ -93,13 +118,55 @@ namespace YouriPortfolio.Controllers
         [HttpPost]
         public ActionResult NewVideo(ProjectViewModel viewModel)
         {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
+
             VisualsRepo.InsertVisual(viewModel.Project.ID, YoutubeIDExtract.ExtractVideoIdFromUri(new Uri(viewModel.PostVideo)), Visual.ContentTypes.Video);
             return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
+        }
+
+        public ActionResult DeleteProject(int ID = 0)
+        {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
+
+            Content content = ContentRepo.GetContent(ID);
+            ProjectViewModel viewModel = new ProjectViewModel();
+            viewModel.Project = content;
+            return View(viewModel);
+        }
+        [HttpPost]
+        public ActionResult DeleteProject(ProjectViewModel viewModel)
+        {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
+
+            if (viewModel == null) return RedirectToAction("Index");
+            Content content = ContentRepo.GetContent(viewModel.Project.ID);
+            if (content != null)
+            {
+                if (!string.IsNullOrEmpty(viewModel.DeleteConfirmationName) && viewModel.DeleteConfirmationName == content.Title)
+                {
+                    ContentRepo.DeleteContent(viewModel.Project.ID);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.Error = "Entered name does not match Project name";
+                    return View(viewModel);
+                }
+            }
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         public ActionResult DeleteVisuals(ProjectViewModel viewModel)
         {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
+
             List<int> toRemoveIDs = new List<int>();
 
             foreach (Visual visual in viewModel.Project.Visuals)
