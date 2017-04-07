@@ -42,9 +42,12 @@ namespace YouriPortfolio.Logic
                     new BBTag("u", "<span style=\"text-decoration:underline;\">", "</span>"),
                     new BBTag("code", "<pre class=\"prettyprint\">", "</pre>"),
                     new BBTag("img", "<img class=\"ContentImg\" src=\"${content}\" />", "", false, true),
+                    new BBTag("fa", "<i class=\"fa ${content}\" aria-hidden=\"true\"></i>", "", false, true),
                     new BBTag("quote", "<blockquote>", "</blockquote>"),
                     new BBTag("list", "<ul>", "</ul>"),
                     new BBTag("*", "<li>", "</li>", true, false),
+                    new BBTag("size", "<span style=\"font-size:${size}%\">", "</span>", new BBAttribute("size", ""), new BBAttribute("size", "size")),
+                    new BBTag("color", "<span style=\"color:${clr}\">", "</span>", new BBAttribute("clr", ""), new BBAttribute("clr", "clr")),
                     new BBTag("url", "<a href=\"${href}\">", "</a>", new BBAttribute("href", ""), new BBAttribute("href", "href")),
                 });
         }

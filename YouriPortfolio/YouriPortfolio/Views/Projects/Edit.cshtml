@@ -10,7 +10,41 @@
 <script>
     $(document).ready(function () {
         var wbbOpt = {
-            buttons: "bold,italic,underline,|,img,link,code"
+            buttons: "bold,italic,underline,|,fontsize,fontcolor,|,img,link,code,fa,|,h1,h2,h3,h4",
+            allButtons: {
+                h1: {
+                    title: 'Insert h1',
+                    buttonText: 'h1',
+                    hotkey: "ctrl+shift+1", //Add hotkey
+                    transform: {
+                        '<h1>{SELTEXT}</h1>': '[h1]{SELTEXT}[/h1]'
+                    }
+                },
+                h2: {
+                    title: 'Insert h2',
+                    buttonText: 'h2',
+                    hotkey: "ctrl+shift+2", //Add hotkey
+                    transform: {
+                        '<h2>{SELTEXT}</h2>': '[h2]{SELTEXT}[/h2]'
+                    }
+                },
+                h3: {
+                    title: 'Insert h3',
+                    buttonText: 'h3',
+                    hotkey: "ctrl+shift+3", //Add hotkey
+                    transform: {
+                        '<h3>{SELTEXT}</h3>': '[h3]{SELTEXT}[/h3]'
+                    }
+                },
+                h4: {
+                    title: 'Insert h4',
+                    buttonText: 'h4',
+                    hotkey: "ctrl+shift+4", //Add hotkey
+                    transform: {
+                        '<h4>{SELTEXT}</h4>': '[h4]{SELTEXT}[/h4]'
+                    }
+                }
+            }
         }
         $("#Project_ContentText").wysibb(wbbOpt);
         $("#Project_ShortContent").wysibb(wbbOpt);
@@ -70,12 +104,12 @@
                             <div id="multiple">
                                 <input type="file" class="multiple" name="files" multiple />
                             </div>
-                                <div id="single">
-                                    <input type="file" class="single" name="files" /><br />
-                                    <input type="file" class="single" name="files" /><br />
-                                    <input type="file" class="single" name="files" /><br />
-                                </div>
-                                <br />
+                            <div id="single">
+                                <input type="file" class="single" name="files" /><br />
+                                <input type="file" class="single" name="files" /><br />
+                                <input type="file" class="single" name="files" /><br />
+                            </div>
+                            <br />
                                 <button class="btn btn-success">Upload</button>
                         }
                         <br />
@@ -89,7 +123,7 @@
                             @Html.TextBoxFor(model => model.PostVideo)
 
                             <br />
-                                <button class="btn btn-success">Upload</button>
+                            <button class="btn btn-success">Upload</button>
                         }
 
                     </div>
@@ -102,29 +136,29 @@
                             @Html.AntiForgeryToken()
                             @Html.HiddenFor(model => model.Project.ID)
                             <h4>Delete Visuals</h4>
-                                <div class="row">
-                                    @for (int i = 0; i < Model.Project.Visuals.Count; i++)
-                                    {
-                                        <div class="col-xs-6 ">
-                                            <div class=" text-center VisualBlock">
+                            <div class="row">
+                                @for (int i = 0; i < Model.Project.Visuals.Count; i++)
+                                {
+                                    <div class="col-xs-6 ">
+                                        <div class=" text-center VisualBlock">
 
-                                                @Html.HiddenFor(model => model.Project.Visuals[i].ID)
-                                                @Html.HiddenFor(model => model.Project.Visuals[i].Location)
-                                                @Html.CheckBoxFor(model => model.Project.Visuals[i].Selected)
-                                                <br />
-                                                @if (Model.Project.Visuals[i].ContentType == Visual.ContentTypes.Photo)
-                                                {
-                                                    <img src="/uploads/@Model.Project.Visuals[i].Location" />
-                                                }
-                                                else
-                                                {
-                                                    <img src="//img.youtube.com/vi/@Model.Project.Visuals[i].Location/sddefault.jpg" />
-                                                }
-                                            </div>
+                                            @Html.HiddenFor(model => model.Project.Visuals[i].ID)
+                                            @Html.HiddenFor(model => model.Project.Visuals[i].Location)
+                                            @Html.CheckBoxFor(model => model.Project.Visuals[i].Selected)
+                                            <br />
+                                            @if (Model.Project.Visuals[i].ContentType == Visual.ContentTypes.Photo)
+                                            {
+                                                <img src="/uploads/@Model.Project.Visuals[i].Location" />
+                                            }
+                                            else
+                                            {
+                                                <img src="//img.youtube.com/vi/@Model.Project.Visuals[i].Location/sddefault.jpg" />
+                                            }
                                         </div>
-                                    }
-                                </div>
-                                <br />
+                                    </div>
+                                }
+                            </div>
+                            <br />
                                 <button class="btn btn-danger">Delete</button>
                         }
                     </div>

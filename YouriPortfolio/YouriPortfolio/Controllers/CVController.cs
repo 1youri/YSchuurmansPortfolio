@@ -4,13 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PCAuthLib;
-using PCDataDLL;
 
 namespace YouriPortfolio.Controllers
 {
-    public class HomeController : Controller
+    public class CVController : Controller
     {
-        // GET: Home
+        // GET: CV
         public ActionResult Index()
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
