@@ -12,7 +12,7 @@ namespace YouriPortfolio.Controllers
     {
         public ActionResult Index()
         {
-            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
 
             Account viewModel = new Account();
 
@@ -29,7 +29,7 @@ namespace YouriPortfolio.Controllers
         [HttpPost]
         public ActionResult Index(Account account)
         {
-            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
 
             if (Login.GetCurrentUser(System.Web.HttpContext.Current).ID > 0) return RedirectToAction("Index", "Home");
 
@@ -53,7 +53,7 @@ namespace YouriPortfolio.Controllers
 
         public ActionResult Logout()
         {
-            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new HttpUnauthorizedResult();
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
 
             Account viewModel = new Account();
 

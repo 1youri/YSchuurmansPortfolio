@@ -5,6 +5,7 @@
     ViewBag.Title = "Projects";
     var currentUser = Login.GetCurrentUser(HttpContext.Current);
 }
+<br/>
 <div class="row">
     <h2>Projects</h2>
     @if (currentUser.Permission >= PCAuthLib.User.PermissionGroup.ADMIN)
@@ -19,13 +20,16 @@
             <div class="">
                 <div class="ProjectBlock noLink" onclick="window.location = '/Projects/Get/@content.ID';">
                     <div class="ProjectImage">
-                        @if (content.HeaderImg.ContentType == Visual.ContentTypes.Photo)
+                        @if (content.HeaderImg != null && content.HeaderImg.Location != null && content.HeaderImg.Location.Length > 1)
                         {
-                            <img src="/uploads/@content.HeaderImg.Location" alt="Project Visual"/>
-                        }
-                        else
-                        {
-                            <img src="//img.youtube.com/vi/@content.HeaderImg.Location/sddefault.jpg" />
+                             if (content.HeaderImg.ContentType == Visual.ContentTypes.Photo)
+                             {
+                                 <img src="/uploads/@content.HeaderImg.Location" alt="Project Visual"/>
+                             }
+                             else
+                             {
+                                 <img src="//img.youtube.com/vi/@content.HeaderImg.Location/sddefault.jpg" alt="Project Visual"/>
+                            }
                         }
                     </div>
                         <div class="ProjectTextBlock">

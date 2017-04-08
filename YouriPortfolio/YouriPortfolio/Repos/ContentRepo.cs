@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Newtonsoft.Json;
 using PCAuthLib;
 using PCDataDLL;
 using YouriPortfolio.Models;
@@ -16,7 +17,7 @@ namespace YouriPortfolio.Repos
             {
                 {"category", category}
             };
-            var result = DB.PFDB.GetMultipleResultsQuery("SELECT * FROM CONTENT WHERE CATEGORY=?", parameters);
+            var result = DB.PFDB.GetMultipleResultsQuery("SELECT * FROM CONTENT WHERE CATEGORY=? ORDER BY PRIORITY,ID DESC", parameters);
 
             if (result != null)
             {
@@ -28,7 +29,8 @@ namespace YouriPortfolio.Repos
                         row.Get("ID"),
                         row.Get("Title"),
                         row.Get("ShortContentBlock"),
-                        row.Get("ContentBlock")));
+                        row.Get("ContentBlock"),
+                        row.Get("Priority").ToInt()));
                 }
                 return returnList;
             }
@@ -49,14 +51,15 @@ namespace YouriPortfolio.Repos
                     result.Get("ID"),
                     result.Get("Title"),
                     result.Get("ShortContentBlock"),
-                    result.Get("ContentBlock"));
+                    result.Get("ContentBlock"),
+                        result.Get("Priority").ToInt());
             }
             return null;
         }
 
         public static Content GetLastContent()
         {
-            var result = DB.PFDB.GetOneResultQuery("SELECT * FROM CONTENT ORDER BY ID DESC LIMIT 1", null);
+            var result = DB.PFDB.GetOneResultQuery("SELECT * FROM CONTENT WHERE CATEGORY='DEFAULT' ORDER BY ID DESC LIMIT 1", null);
 
             if (result != null)
             {
@@ -64,19 +67,21 @@ namespace YouriPortfolio.Repos
                     result.Get("ID"),
                     result.Get("Title"),
                     result.Get("ShortContentBlock"),
-                    result.Get("ContentBlock"));
+                    result.Get("ContentBlock"),
+                        result.Get("Priority").ToInt());
             }
             return null;
         }
 
         public static bool UpdateContent(Content toEdit)
         {
-            string sql = "UPDATE CONTENT SET TITLE=?, ShortContentBlock=?, ContentBlock=? WHERE ID=?";
+            string sql = "UPDATE CONTENT SET TITLE=?, ShortContentBlock=?, ContentBlock=?, Priority=? WHERE ID=? AND CATEGORY='DEFAULT'";
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"Title", toEdit.Title},
                 {"ShortContentBlock", toEdit.ShortContent },
                 {"ContentBlock", toEdit.ContentText },
+                {"priority", toEdit.Priority},
                 {"id", toEdit.ID}
             };
             var result = DB.PFDB.UpdateQuery(sql, parameters);
@@ -106,6 +111,40 @@ namespace YouriPortfolio.Repos
                 {"id", ID}
             };
             var result = DB.PFDB.DeleteQuery(sql, parameters);
+
+            return result;
+        }
+
+        public static CVViewModel GetCV()
+        {
+            var result = DB.PFDB.GetOneResultQuery("SELECT * FROM CONTENT WHERE CATEGORY='CV'", null);
+
+            if (result != null)
+            {
+                if (result.KeyCount() > 0 && result.Get("ContentBlock") != null)
+                {
+                    return JsonConvert.DeserializeObject<CVViewModel>(result.Get("ContentBlock"));
+                }
+                else
+                {
+                    if (!DB.PFDB.CheckExist("SELECT * FROM CONTENT WHERE CATEGORY = 'CV'", null))
+                    {
+                        DB.PFDB.InsertQuery("INSERT INTO CONTENT(CATEGORY) VALUES('CV')", null);
+                        return new CVViewModel();
+                    }
+                }
+            }
+            return null;
+        }
+
+        public static bool UpdateCV(string toUpdate)
+        {
+            string sql = "UPDATE CONTENT SET ContentBlock=? WHERE CATEGORY='CV'";
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                {"Title", toUpdate}
+            };
+            var result = DB.PFDB.UpdateQuery(sql, parameters);
 
             return result;
         }

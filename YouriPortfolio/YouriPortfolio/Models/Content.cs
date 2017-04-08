@@ -12,13 +12,14 @@ namespace YouriPortfolio.Models
             Visuals = new List<Visual>();
         }
 
-        public Content(string id, string title, string shortContent, string contentText)
+        public Content(string id, string title, string shortContent, string contentText, int priority)
         {
             ID = id.ToInt();
             Title = title;
             ShortContent = shortContent;
             ContentText = contentText;
             Visuals = new List<Visual>();
+            this.Priority = priority;
         }
 
         public int ID { get; set; }
@@ -27,6 +28,7 @@ namespace YouriPortfolio.Models
         public string ContentText { get; set; }
         public Visual HeaderImg { get; set; }
         public List<Visual> Visuals { get; set; }
+        public int Priority { get; set; }
 
     }
 }
