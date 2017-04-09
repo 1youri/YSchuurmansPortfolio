@@ -39,6 +39,7 @@ h4 {
     border-radius: 4px;
     margin-bottom: 30px;
     cursor: pointer;
+    word-wrap: break-word;
 }
 
 .LGProjectBlock {

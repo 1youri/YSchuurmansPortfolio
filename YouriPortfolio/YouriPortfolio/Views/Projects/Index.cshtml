@@ -5,41 +5,61 @@
     ViewBag.Title = "Projects";
     var currentUser = Login.GetCurrentUser(HttpContext.Current);
 }
-<br/>
+<br />
 <div class="row">
     <h2>Projects</h2>
     @if (currentUser.Permission >= PCAuthLib.User.PermissionGroup.ADMIN)
     {
         <div class="row text-right">
-            @Html.ActionLink("New", "Edit", new {ID = 0}, new {@class = "btn btn-primary"})
+            @Html.ActionLink("New", "Edit", new { ID = 0 }, new { @class = "btn btn-primary" })
         </div>
     }
-    @foreach (Content content in Model.ContentList)
-    {
-        <div class="col-lg-3 col-sm-4 col-xs-6 col-xxs-12 ZoomBlock">
-            <div class="">
-                <div class="ProjectBlock noLink" onclick="window.location = '/Projects/Get/@content.ID';">
-                    <div class="ProjectImage">
-                        @if (content.HeaderImg != null && content.HeaderImg.Location != null && content.HeaderImg.Location.Length > 1)
-                        {
-                             if (content.HeaderImg.ContentType == Visual.ContentTypes.Photo)
-                             {
-                                 <img src="/uploads/@content.HeaderImg.Location" alt="Project Visual"/>
-                             }
-                             else
-                             {
-                                 <img src="//img.youtube.com/vi/@content.HeaderImg.Location/sddefault.jpg" alt="Project Visual"/>
-                            }
-                        }
-                    </div>
-                        <div class="ProjectTextBlock">
-                            <h2 class="ProjectTitle">
-                                @Html.Raw(content.Title)
-                            </h2>
-                            <p>@Html.Raw(content.ShortContent)</p>
+    <script>
+        $(document).ready(function () {
+            $('.grid').masonry({
+                itemSelector: '.grid-item', // use a separate class for itemSelector, other than .col-
+                columnWidth: '.grid-sizer',
+                percentPosition: true
+            });
+        });
+    </script>
+
+    <div class="container-fluid">
+        <!-- add extra container element for Masonry -->
+        <div class="grid">
+            <!-- add sizing element for columnWidth -->
+            <div class="grid-sizer col-lg-3 col-sm-4 col-xs-6 col-xxs-12"></div>
+
+            @foreach (Content content in Model.ContentList)
+            {
+
+                <div class="grid-item col-lg-3 col-sm-4 col-xs-6 col-xxs-12">
+                    <div class="grid-item-content ZoomBlock">
+                        <div class="ProjectBlock noLink" onclick="window.location = '/Projects/Get/@content.ID';">
+                            <div class="ProjectImage">
+                                @if (content.HeaderImg != null && content.HeaderImg.Location != null && content.HeaderImg.Location.Length > 1)
+                                {
+                                    if (content.HeaderImg.ContentType == Visual.ContentTypes.Photo)
+                                    {
+                                        <img src="/uploads/@content.HeaderImg.Location" alt="Project Visual" />
+                                    }
+                                    else
+                                    {
+                                        <img src="//img.youtube.com/vi/@content.HeaderImg.Location/sddefault.jpg" alt="Project Visual" />
+                                    }
+                                }
+                            </div>
+                            <div class="ProjectTextBlock">
+                                <h2 class="ProjectTitle">
+                                    @Html.Raw(content.Title)
+                                </h2>
+                                <p>@Html.Raw(content.ShortContent)</p>
+                            </div>
                         </div>
                     </div>
-            </div>
+                </div>
+            }
         </div>
-    }
+    </div>
+
 </div>
