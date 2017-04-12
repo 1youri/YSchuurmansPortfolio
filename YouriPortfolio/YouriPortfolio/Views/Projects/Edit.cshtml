@@ -74,23 +74,32 @@
                 <div class="row">
                     <div class="text-left col-xs-6">
                         <span style="padding-left: 15px">Priority</span>
-                        @Html.EditorFor(model => model.Project.Priority, new {htmlAttributes = new {@style = "width:50px;"}})
+                        @Html.EditorFor(model => model.Project.Priority, new { htmlAttributes = new { @style = "width:50px;" } })
                     </div>
                     <div class="text-right col-xs-6">
                         @Html.ActionLink("To Project", "Get", new { ID = Model.Project.ID }, new { @class = "btn btn-primary" })
-                        @Html.ActionLink("Delete", "DeleteProject", new {ID = Model.Project.ID}, new {@class = "btn btn-danger"})
+                        @Html.ActionLink("Delete", "DeleteProject", new { ID = Model.Project.ID }, new { @class = "btn btn-danger" })
                     </div>
                 </div>
                 <div class="col-md-8">
                     <h3>Project Content</h3>
                     @Html.AntiForgeryToken()
                     @Html.HiddenFor(model => model.Project.ID)
-                    <h4>Title</h4>
-                    @Html.EditorFor(model => model.Project.Title)
 
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <h4>Title</h4>
+                            @Html.EditorFor(model => model.Project.Title, new { htmlAttributes = new { @style = "width:100%;" } })
+                        </div>
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <h4>Date</h4>
+                            @Html.EditorFor(model => model.Project.Date, new { htmlAttributes = new { @style = "width:100%;" } })
+                        </div>
+                    </div>
+                    <br/>
                     <h4>Short Description</h4>
                     @Html.TextAreaFor(model => model.Project.ShortContent, new { @style = "min-height:100px" })
-
+                    <br/>
                     <h4>Full Description</h4>
                     @Html.TextAreaFor(model => model.Project.ContentText, new { @style = "min-height:200px" })
                     <br />
@@ -103,73 +112,73 @@
                 @if (Model.Project.ID > 0)
                 {
                     <h3>Visual content management</h3>
-                        <div class="row">
-                            <h4>Upload Visuals</h4>
-                            @using (Html.BeginForm("UploadMultiple", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                @Html.HiddenFor(model => model.Project.ID)
-                                <div id="multiple">
-                                    <input type="file" class="multiple" name="files" multiple />
-                                </div>
-                                <div id="single">
-                                    <input type="file" class="single" name="files" /><br />
-                                    <input type="file" class="single" name="files" /><br />
-                                    <input type="file" class="single" name="files" /><br />
-                                </div>
-                                <br />
-                                <button class="btn btn-success">Upload</button>
-                            }
-                            <br />
-                            <br />
-                            <h4>New Videos</h4>
-                            @using (Html.BeginForm("NewVideo", "Projects", FormMethod.Post))
-                            {
-                                @Html.AntiForgeryToken()
-                                @Html.HiddenFor(model => model.Project.ID)
-
-                                @Html.TextBoxFor(model => model.PostVideo)
-
-                                <br />
-                                <button class="btn btn-success">Upload</button>
-                            }
-
-                        </div>
-
-                        <br />
-                        <div class="row">
-
-                            @using (Html.BeginForm("DeleteVisuals", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
-                            {
-                                @Html.AntiForgeryToken()
-                                @Html.HiddenFor(model => model.Project.ID)
-                                <h4>Delete Visuals</h4>
                                 <div class="row">
-                                    @for (int i = 0; i < Model.Project.Visuals.Count; i++)
+                                    <h4>Upload Visuals</h4>
+                                    @using (Html.BeginForm("UploadMultiple", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
                                     {
-                                        <div class="col-xs-6 ">
-                                            <div class=" text-center VisualBlock">
-
-                                                @Html.HiddenFor(model => model.Project.Visuals[i].ID)
-                                                @Html.HiddenFor(model => model.Project.Visuals[i].Location)
-                                                @Html.CheckBoxFor(model => model.Project.Visuals[i].Selected)
-                                                <br />
-                                                @if (Model.Project.Visuals[i].ContentType == Visual.ContentTypes.Photo)
-                                                {
-                                                    <img src="/uploads/@Model.Project.Visuals[i].Location" />
-                                                }
-                                                else
-                                                {
-                                                    <img src="//img.youtube.com/vi/@Model.Project.Visuals[i].Location/sddefault.jpg" />
-                                                }
-                                            </div>
+                                        @Html.AntiForgeryToken()
+                                        @Html.HiddenFor(model => model.Project.ID)
+                                        <div id="multiple">
+                                            <input type="file" class="multiple" name="files" multiple />
                                         </div>
+                                        <div id="single">
+                                            <input type="file" class="single" name="files" /><br />
+                                            <input type="file" class="single" name="files" /><br />
+                                            <input type="file" class="single" name="files" /><br />
+                                        </div>
+                                        <br />
+                                        <button class="btn btn-success">Upload</button>
+                                    }
+                                    <br />
+                                    <br />
+                                    <h4>New Videos</h4>
+                                    @using (Html.BeginForm("NewVideo", "Projects", FormMethod.Post))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.HiddenFor(model => model.Project.ID)
+
+                                        @Html.TextBoxFor(model => model.PostVideo)
+
+                                        <br />
+                                        <button class="btn btn-success">Upload</button>
+                                    }
+
+                                </div>
+
+                                <br />
+                                <div class="row">
+
+                                    @using (Html.BeginForm("DeleteVisuals", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                                        @Html.HiddenFor(model => model.Project.ID)
+                                        <h4>Delete Visuals</h4>
+                                        <div class="row">
+                                            @for (int i = 0; i < Model.Project.Visuals.Count; i++)
+                                            {
+                                                <div class="col-xs-6 ">
+                                                    <div class=" text-center VisualBlock">
+
+                                                        @Html.HiddenFor(model => model.Project.Visuals[i].ID)
+                                                        @Html.HiddenFor(model => model.Project.Visuals[i].Location)
+                                                        @Html.CheckBoxFor(model => model.Project.Visuals[i].Selected)
+                                                        <br />
+                                                        @if (Model.Project.Visuals[i].ContentType == Visual.ContentTypes.Photo)
+                                                        {
+                                                            <img src="/uploads/@Model.Project.Visuals[i].Location" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <img src="//img.youtube.com/vi/@Model.Project.Visuals[i].Location/sddefault.jpg" />
+                                                        }
+                                                    </div>
+                                                </div>
+                                            }
+                                        </div>
+                                        <br />
+                                        <button class="btn btn-danger">Delete</button>
                                     }
                                 </div>
-                                <br />
-                                <button class="btn btn-danger">Delete</button>
-                            }
-                        </div>
                 }
             </div>
         </div>

@@ -30,7 +30,8 @@ namespace YouriPortfolio.Repos
                         row.Get("Title"),
                         row.Get("ShortContentBlock"),
                         row.Get("ContentBlock"),
-                        row.Get("Priority").ToInt()));
+                        row.Get("Priority").ToInt(),
+                        row.Get("Date")));
                 }
                 return returnList;
             }
@@ -52,7 +53,8 @@ namespace YouriPortfolio.Repos
                     result.Get("Title"),
                     result.Get("ShortContentBlock"),
                     result.Get("ContentBlock"),
-                        result.Get("Priority").ToInt());
+                    result.Get("Priority").ToInt(),
+                    result.Get("Date"));
             }
             return null;
         }
@@ -68,20 +70,22 @@ namespace YouriPortfolio.Repos
                     result.Get("Title"),
                     result.Get("ShortContentBlock"),
                     result.Get("ContentBlock"),
-                        result.Get("Priority").ToInt());
+                        result.Get("Priority").ToInt(),
+                        result.Get("Date"));
             }
             return null;
         }
 
         public static bool UpdateContent(Content toEdit)
         {
-            string sql = "UPDATE CONTENT SET TITLE=?, ShortContentBlock=?, ContentBlock=?, Priority=? WHERE ID=? AND CATEGORY='DEFAULT'";
+            string sql = "UPDATE CONTENT SET TITLE=?, ShortContentBlock=?, ContentBlock=?, Priority=?, Date=? WHERE ID=? AND CATEGORY='DEFAULT'";
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"Title", toEdit.Title},
                 {"ShortContentBlock", toEdit.ShortContent },
                 {"ContentBlock", toEdit.ContentText },
                 {"priority", toEdit.Priority},
+                {"date", toEdit.Date + "" },
                 {"id", toEdit.ID}
             };
             var result = DB.PFDB.UpdateQuery(sql, parameters);
@@ -91,12 +95,13 @@ namespace YouriPortfolio.Repos
 
         public static bool InsertContent(Content toInsert)
         {
-            string sql = "INSERT INTO CONTENT(Title,ShortContentBlock,ContentBlock) VALUES(?,?,?)";
+            string sql = "INSERT INTO CONTENT(Title,ShortContentBlock,ContentBlock,Date) VALUES(?,?,?,?)";
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"Title", toInsert.Title},
                 {"ShortContentBlock", toInsert.ShortContent },
-                {"ContentBlock", toInsert.ContentText }
+                {"ContentBlock", toInsert.ContentText },
+                {"date",toInsert.Date }
             };
             var result = DB.PFDB.InsertQuery(sql, parameters);
 

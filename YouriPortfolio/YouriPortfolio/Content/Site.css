@@ -32,6 +32,13 @@ h4 {
     color: #001433;
 }
 
+.footerText {
+    font-style: italic;
+    font-size: 1em;
+    margin-bottom: 0px;
+    color: #696969;
+}
+
 /*#region Project Pages*/
 
 .ProjectBlock {
@@ -83,10 +90,7 @@ h4 {
     max-width: 100%;
 }
 
-
-
 /*#endregion*/
-
 /* #region Navigation Bar*/
 #navbarddiv.navbar-default .navbar-brand {
     color: rgba(77, 77, 77, 1);
