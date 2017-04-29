@@ -15,6 +15,7 @@ namespace YouriPortfolio.Logic
         {
             if (Parser == null) InitParser();
             if (input == null) return "";
+            input = input.Replace("\r\n", "[br]");
             return Parser?.ToHtml(input);
         }
 

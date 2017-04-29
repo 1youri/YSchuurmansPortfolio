@@ -5,6 +5,7 @@
     ViewBag.Title = "Projects";
     var currentUser = Login.GetCurrentUser(HttpContext.Current);
 }
+
 <br />
 <div class="row">
     <h2>Projects</h2>
@@ -50,6 +51,9 @@
                                 }
                             </div>
                             <div class="ProjectTextBlock">
+                                <p class="footerText">
+                                    @content.Date
+                                </p>
                                 <h2 class="ProjectTitle">
                                     @Html.Raw(content.Title)
                                 </h2>

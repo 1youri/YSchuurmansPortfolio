@@ -37,7 +37,7 @@ namespace YouriPortfolio.Controllers
 
             return View(viewModel);
         }
-        // GET: Project
+        // GET: Project/[ID]
         public ActionResult Get(int ID = 0)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
