@@ -71,10 +71,16 @@
 
             @using (Html.BeginForm("Edit", "Projects", FormMethod.Post))
             {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Project.ID)
+
+
                 <div class="row">
                     <div class="text-left col-xs-6">
+                        <span style="padding-left: 15px">Public</span>
+                        @Html.EditorFor(model => model.Project.Shown)
                         <span style="padding-left: 15px">Priority</span>
-                        @Html.EditorFor(model => model.Project.Priority, new { htmlAttributes = new { @style = "width:50px;" } })
+                        @Html.EditorFor(model => model.Project.Priority, new {htmlAttributes = new {@style = "width:50px;"}})
                     </div>
                     <div class="text-right col-xs-6">
                         @Html.ActionLink("To Project", "Get", new { ID = Model.Project.ID }, new { @class = "btn btn-primary" })
@@ -83,8 +89,6 @@
                 </div>
                 <div class="col-md-8">
                     <h3>Project Content</h3>
-                    @Html.AntiForgeryToken()
-                    @Html.HiddenFor(model => model.Project.ID)
 
                     <div class="row">
                         <div class="col-sm-4">

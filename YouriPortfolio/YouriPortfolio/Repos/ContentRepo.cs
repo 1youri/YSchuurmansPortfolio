@@ -11,7 +11,7 @@ namespace YouriPortfolio.Repos
 {
     public class ContentRepo
     {
-        public static List<Content> GetAllContent(string category = "DEFAULT")
+        public static List<Content> GetAllContent(string category = "DEFAULT", bool isAdmin = false)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
@@ -25,20 +25,22 @@ namespace YouriPortfolio.Repos
 
                 foreach (var row in result)
                 {
+                    if(!isAdmin && row.Get("Shown") != "1") continue;
                     returnList.Add(new Content(
                         row.Get("ID"),
                         row.Get("Title"),
                         row.Get("ShortContentBlock"),
                         row.Get("ContentBlock"),
                         row.Get("Priority").ToInt(),
-                        row.Get("Date")));
+                        row.Get("Date"),
+                        row.Get("Shown") == "1"));
                 }
                 return returnList;
             }
             return null;
         }
 
-        public static Content GetContent(int id)
+        public static Content GetContent(int id, bool isAdmin = false)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
@@ -48,13 +50,15 @@ namespace YouriPortfolio.Repos
 
             if (result != null)
             {
+                if(!isAdmin && result.Get("Shown") == "1")
                 return new Content(
                     result.Get("ID"),
                     result.Get("Title"),
                     result.Get("ShortContentBlock"),
                     result.Get("ContentBlock"),
                     result.Get("Priority").ToInt(),
-                    result.Get("Date"));
+                    result.Get("Date"),
+                    result.Get("Shown") == "1");
             }
             return null;
         }
@@ -70,8 +74,9 @@ namespace YouriPortfolio.Repos
                     result.Get("Title"),
                     result.Get("ShortContentBlock"),
                     result.Get("ContentBlock"),
-                        result.Get("Priority").ToInt(),
-                        result.Get("Date"));
+                    result.Get("Priority").ToInt(),
+                    result.Get("Date"),
+                    Convert.ToBoolean(result.Get("Shown")));
             }
             return null;
         }

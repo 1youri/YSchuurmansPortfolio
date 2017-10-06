@@ -18,10 +18,12 @@ namespace YouriPortfolio.Controllers
         public ActionResult Index()
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
 
             ProjectListViewModel viewModel = new ProjectListViewModel();
 
-            List<Content> content = ContentRepo.GetAllContent();
+            List<Content> content =
+                ContentRepo.GetAllContent(isAdmin: currentUser.Permission == PCAuthLib.User.PermissionGroup.ADMIN);
 
             if (content != null)
             {
@@ -41,15 +43,17 @@ namespace YouriPortfolio.Controllers
         public ActionResult Get(int ID = 0)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
 
             ProjectViewModel viewModel = new ProjectViewModel();
             if (ID < 0) ID = ID * -1;
             Content content = ContentRepo.GetContent(ID);
-            if (content != null)
-            {
-                content.Visuals = VisualsRepo.GetVisuals(content.ID);
-                BBCode.ParseContent(content);
-            }
+
+            if (content == null) return RedirectToAction("Index");
+
+            content.Visuals = VisualsRepo.GetVisuals(content.ID);
+            BBCode.ParseContent(content);
+
             viewModel.Project = content;
 
             return View(viewModel);
@@ -59,7 +63,7 @@ namespace YouriPortfolio.Controllers
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
-            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index","Login");
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
             ProjectViewModel viewModel = new ProjectViewModel();
             Content content = ContentRepo.GetContent(ID);
@@ -90,7 +94,7 @@ namespace YouriPortfolio.Controllers
                 }
             }
 
-            return RedirectToAction("Edit", new RouteValueDictionary() {{"ID", viewModel.Project.ID}});
+            return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
         }
 
         [HttpPost]
