@@ -17,7 +17,7 @@ namespace YouriPortfolio.Repos
             {
                 {"category", category}
             };
-            var result = DB.PFDB.GetMultipleResultsQuery("SELECT * FROM CONTENT WHERE CATEGORY=? ORDER BY PRIORITY,ID DESC", parameters);
+            var result = DB.PFDB.GetMultipleResultsQuery("SELECT * FROM CONTENT WHERE CATEGORY=? ORDER BY PRIORITY ASC,ID DESC", parameters);
 
             if (result != null)
             {
@@ -81,19 +81,22 @@ namespace YouriPortfolio.Repos
             return null;
         }
 
-        public static bool UpdateContent(Content toEdit)
+        public static bool UpdateOrder(string[] newIDOrder)
         {
-            string sql = "UPDATE CONTENT SET TITLE=?, ShortContentBlock=?, ContentBlock=?, Priority=?, Date=? WHERE ID=? AND CATEGORY='DEFAULT'";
-            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            List<string> sqlStrings = new List<string>();
+            List<Dictionary<string, object>> parameterList = new List<Dictionary<string, object>>();
+
+            for (int i = 0; i < newIDOrder.Length; i++)
             {
-                {"Title", toEdit.Title},
-                {"ShortContentBlock", toEdit.ShortContent },
-                {"ContentBlock", toEdit.ContentText },
-                {"priority", toEdit.Priority},
-                {"date", toEdit.Date + "" },
-                {"id", toEdit.ID}
-            };
-            var result = DB.PFDB.UpdateQuery(sql, parameters);
+                sqlStrings.Add("UPDATE CONTENT SET PRIORITY=? WHERE ID=? AND CATEGORY='DEFAULT'");
+                parameterList.Add(new Dictionary<string, object>()
+                {
+                    {"priority", i},
+                    {"id", newIDOrder[i]}
+                });
+            }
+            
+            var result = DB.PFDB.UpdateMultiQuery(sqlStrings, parameterList);
 
             return result;
         }
@@ -153,6 +156,23 @@ namespace YouriPortfolio.Repos
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"Title", toUpdate}
+            };
+            var result = DB.PFDB.UpdateQuery(sql, parameters);
+
+            return result;
+        }
+
+        public static bool UpdateContent(Content toEdit)
+        {
+            string sql = "UPDATE CONTENT SET TITLE=?, ShortContentBlock=?, ContentBlock=?, Priority=?, Date=? WHERE ID=? AND CATEGORY='DEFAULT'";
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                {"Title", toEdit.Title},
+                {"ShortContentBlock", toEdit.ShortContent },
+                {"ContentBlock", toEdit.ContentText },
+                {"priority", toEdit.Priority},
+                {"date", toEdit.Date + "" },
+                {"id", toEdit.ID}
             };
             var result = DB.PFDB.UpdateQuery(sql, parameters);
 

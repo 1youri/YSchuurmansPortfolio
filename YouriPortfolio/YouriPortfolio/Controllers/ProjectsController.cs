@@ -59,6 +59,49 @@ namespace YouriPortfolio.Controllers
             return View(viewModel);
         }
 
+        public ActionResult Reorder()
+        {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
+
+            ProjectListViewModel viewModel = new ProjectListViewModel();
+
+            List<Content> content =
+                ContentRepo.GetAllContent(isAdmin: currentUser.Permission == PCAuthLib.User.PermissionGroup.ADMIN);
+
+            if (content != null)
+            {
+                foreach (Content contentItem in content)
+                {
+                    BBCode.ParseContent(contentItem);
+
+                    contentItem.HeaderImg = VisualsRepo.RandomVisual(contentItem.ID);
+                }
+            }
+
+            viewModel.ContentList = content ?? new List<Content>();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public string Reorder(string orderData)
+        {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return "";
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return "";
+
+
+            return orderData;
+
+            string[] newOrder = orderData.Split(',');
+
+            
+
+            return ContentRepo.UpdateOrder(newOrder).ToString();
+        }
+
         public ActionResult Edit(int ID = 0)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
