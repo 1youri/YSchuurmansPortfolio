@@ -170,7 +170,7 @@ namespace YouriPortfolio.Repos
                 {"Title", toEdit.Title},
                 {"ShortContentBlock", toEdit.ShortContent },
                 {"ContentBlock", toEdit.ContentText },
-                {"priority", toEdit.Priority},
+                {"Shown", toEdit.Shown},
                 {"date", toEdit.Date + "" },
                 {"id", toEdit.ID}
             };
