@@ -164,13 +164,13 @@ namespace YouriPortfolio.Repos
 
         public static bool UpdateContent(Content toEdit)
         {
-            string sql = "UPDATE CONTENT SET TITLE=?, ShortContentBlock=?, ContentBlock=?, Priority=?, Date=? WHERE ID=? AND CATEGORY='DEFAULT'";
+            string sql = "UPDATE CONTENT SET TITLE=?, ShortContentBlock=?, ContentBlock=?, Shown=?, Date=? WHERE ID=? AND CATEGORY='DEFAULT'";
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"Title", toEdit.Title},
                 {"ShortContentBlock", toEdit.ShortContent },
                 {"ContentBlock", toEdit.ContentText },
-                {"Shown", toEdit.Shown},
+                {"Shown", toEdit.Shown?1:0},
                 {"date", toEdit.Date + "" },
                 {"id", toEdit.ID}
             };
