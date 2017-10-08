@@ -27,7 +27,6 @@
             $("#sortable").sortable({
                 update: function (event, ui) {
                     var sortableData = $("#sortable").sortable('toArray').join(",");
-                    alert(sortableData);
                     $.ajax({
                         data: {
                             "orderData": sortableData
