@@ -181,8 +181,6 @@
     <Content Include="mstile-150x150.png" />
     <Content Include="MySql.Data.dll" />
     <Content Include="Newtonsoft.Json.dll" />
-    <Content Include="PCAuthLib.dll" />
-    <Content Include="PCDataDLL.dll" />
     <Content Include="safari-pinned-tab.svg" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />

@@ -47,7 +47,7 @@ namespace YouriPortfolio.Controllers
 
             ProjectViewModel viewModel = new ProjectViewModel();
             if (ID < 0) ID = ID * -1;
-            Content content = ContentRepo.GetContent(ID);
+            Content content = ContentRepo.GetContent(ID, currentUser.Permission == PCAuthLib.User.PermissionGroup.ADMIN);
 
             if (content == null) return RedirectToAction("Index");
 
@@ -93,12 +93,10 @@ namespace YouriPortfolio.Controllers
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return "";
 
 
-            return orderData;
+            //return orderData;
+            if (String.IsNullOrEmpty(orderData)) return "";
 
             string[] newOrder = orderData.Split(',');
-
-            
-
             return ContentRepo.UpdateOrder(newOrder).ToString();
         }
 
@@ -109,7 +107,7 @@ namespace YouriPortfolio.Controllers
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
             ProjectViewModel viewModel = new ProjectViewModel();
-            Content content = ContentRepo.GetContent(ID);
+            Content content = ContentRepo.GetContent(ID, currentUser.Permission == PCAuthLib.User.PermissionGroup.ADMIN);
             if (content != null)
             {
                 content.Visuals = VisualsRepo.GetVisuals(content.ID);
@@ -173,15 +171,15 @@ namespace YouriPortfolio.Controllers
             return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
         }
 
-        public ActionResult DeleteProject(int ID = 0)
-        {
-            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+        //public ActionResult DeleteProject(int ID = 0)
+        //{
+        //    if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
 
-            Content content = ContentRepo.GetContent(ID);
-            ProjectViewModel viewModel = new ProjectViewModel();
-            viewModel.Project = content;
-            return View(viewModel);
-        }
+        //    Content content = ContentRepo.GetContent(ID);
+        //    ProjectViewModel viewModel = new ProjectViewModel();
+        //    viewModel.Project = content;
+        //    return View(viewModel);
+        //}
         [HttpPost]
         public ActionResult DeleteProject(ProjectViewModel viewModel)
         {
@@ -190,7 +188,7 @@ namespace YouriPortfolio.Controllers
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
             if (viewModel == null) return RedirectToAction("Index");
-            Content content = ContentRepo.GetContent(viewModel.Project.ID);
+            Content content = ContentRepo.GetContent(viewModel.Project.ID, currentUser.Permission == PCAuthLib.User.PermissionGroup.ADMIN);
             if (content != null)
             {
                 if (!string.IsNullOrEmpty(viewModel.DeleteConfirmationName) && viewModel.DeleteConfirmationName == content.Title)

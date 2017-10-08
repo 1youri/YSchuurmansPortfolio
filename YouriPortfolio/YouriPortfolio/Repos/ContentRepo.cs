@@ -50,7 +50,7 @@ namespace YouriPortfolio.Repos
 
             if (result != null)
             {
-                if(!isAdmin && result.Get("Shown") == "1")
+                if (!isAdmin && result.Get("Shown") != "1") return null;
                 return new Content(
                     result.Get("ID"),
                     result.Get("Title"),

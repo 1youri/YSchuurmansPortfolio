@@ -73,14 +73,13 @@
             {
                 @Html.AntiForgeryToken()
                 @Html.HiddenFor(model => model.Project.ID)
+                @Html.HiddenFor(model => model.Project.Priority)
 
 
                 <div class="row">
                     <div class="text-left col-xs-6">
                         <span style="padding-left: 15px">Public</span>
                         @Html.EditorFor(model => model.Project.Shown)
-                        <span style="padding-left: 15px">Priority</span>
-                        @Html.EditorFor(model => model.Project.Priority, new {htmlAttributes = new {@style = "width:50px;"}})
                     </div>
                     <div class="text-right col-xs-6">
                         @Html.ActionLink("To Project", "Get", new { ID = Model.Project.ID }, new { @class = "btn btn-primary" })
