@@ -11,13 +11,13 @@ namespace YouriPortfolio.Repos
 {
     public class ContentRepo
     {
-        public static List<Content> GetAllContent(string category = "DEFAULT")
+        public static List<Content> GetAllContent(string category = "DEFAULT", bool isAdmin = false)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"category", category}
             };
-            var result = DB.PFDB.GetMultipleResultsQuery("SELECT * FROM CONTENT WHERE CATEGORY=? ORDER BY PRIORITY,ID DESC", parameters);
+            var result = DB.PFDB.GetMultipleResultsQuery("SELECT * FROM CONTENT WHERE CATEGORY=? ORDER BY PRIORITY ASC,ID DESC", parameters);
 
             if (result != null)
             {
@@ -25,20 +25,22 @@ namespace YouriPortfolio.Repos
 
                 foreach (var row in result)
                 {
+                    if(!isAdmin && row.Get("Shown") != "1") continue;
                     returnList.Add(new Content(
                         row.Get("ID"),
                         row.Get("Title"),
                         row.Get("ShortContentBlock"),
                         row.Get("ContentBlock"),
                         row.Get("Priority").ToInt(),
-                        row.Get("Date")));
+                        row.Get("Date"),
+                        row.Get("Shown") == "1"));
                 }
                 return returnList;
             }
             return null;
         }
 
-        public static Content GetContent(int id)
+        public static Content GetContent(int id, bool isAdmin = false)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
@@ -48,13 +50,15 @@ namespace YouriPortfolio.Repos
 
             if (result != null)
             {
+                if (!isAdmin && result.Get("Shown") != "1") return null;
                 return new Content(
                     result.Get("ID"),
                     result.Get("Title"),
                     result.Get("ShortContentBlock"),
                     result.Get("ContentBlock"),
                     result.Get("Priority").ToInt(),
-                    result.Get("Date"));
+                    result.Get("Date"),
+                    result.Get("Shown") == "1");
             }
             return null;
         }
@@ -70,25 +74,29 @@ namespace YouriPortfolio.Repos
                     result.Get("Title"),
                     result.Get("ShortContentBlock"),
                     result.Get("ContentBlock"),
-                        result.Get("Priority").ToInt(),
-                        result.Get("Date"));
+                    result.Get("Priority").ToInt(),
+                    result.Get("Date"),
+                    Convert.ToBoolean(result.Get("Shown")));
             }
             return null;
         }
 
-        public static bool UpdateContent(Content toEdit)
+        public static bool UpdateOrder(string[] newIDOrder)
         {
-            string sql = "UPDATE CONTENT SET TITLE=?, ShortContentBlock=?, ContentBlock=?, Priority=?, Date=? WHERE ID=? AND CATEGORY='DEFAULT'";
-            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            List<string> sqlStrings = new List<string>();
+            List<Dictionary<string, object>> parameterList = new List<Dictionary<string, object>>();
+
+            for (int i = 0; i < newIDOrder.Length; i++)
             {
-                {"Title", toEdit.Title},
-                {"ShortContentBlock", toEdit.ShortContent },
-                {"ContentBlock", toEdit.ContentText },
-                {"priority", toEdit.Priority},
-                {"date", toEdit.Date + "" },
-                {"id", toEdit.ID}
-            };
-            var result = DB.PFDB.UpdateQuery(sql, parameters);
+                sqlStrings.Add("UPDATE CONTENT SET PRIORITY=? WHERE ID=? AND CATEGORY='DEFAULT'");
+                parameterList.Add(new Dictionary<string, object>()
+                {
+                    {"priority", i},
+                    {"id", newIDOrder[i]}
+                });
+            }
+            
+            var result = DB.PFDB.UpdateMultiQuery(sqlStrings, parameterList);
 
             return result;
         }
@@ -148,6 +156,23 @@ namespace YouriPortfolio.Repos
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"Title", toUpdate}
+            };
+            var result = DB.PFDB.UpdateQuery(sql, parameters);
+
+            return result;
+        }
+
+        public static bool UpdateContent(Content toEdit)
+        {
+            string sql = "UPDATE CONTENT SET TITLE=?, ShortContentBlock=?, ContentBlock=?, Priority=?, Date=? WHERE ID=? AND CATEGORY='DEFAULT'";
+            Dictionary<string, object> parameters = new Dictionary<string, object>()
+            {
+                {"Title", toEdit.Title},
+                {"ShortContentBlock", toEdit.ShortContent },
+                {"ContentBlock", toEdit.ContentText },
+                {"priority", toEdit.Priority},
+                {"date", toEdit.Date + "" },
+                {"id", toEdit.ID}
             };
             var result = DB.PFDB.UpdateQuery(sql, parameters);
 

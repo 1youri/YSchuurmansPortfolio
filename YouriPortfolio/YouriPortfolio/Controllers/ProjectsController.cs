@@ -18,10 +18,12 @@ namespace YouriPortfolio.Controllers
         public ActionResult Index()
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
 
             ProjectListViewModel viewModel = new ProjectListViewModel();
 
-            List<Content> content = ContentRepo.GetAllContent();
+            List<Content> content =
+                ContentRepo.GetAllContent(isAdmin: currentUser.Permission == PCAuthLib.User.PermissionGroup.ADMIN);
 
             if (content != null)
             {
@@ -41,28 +43,71 @@ namespace YouriPortfolio.Controllers
         public ActionResult Get(int ID = 0)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
 
             ProjectViewModel viewModel = new ProjectViewModel();
             if (ID < 0) ID = ID * -1;
-            Content content = ContentRepo.GetContent(ID);
-            if (content != null)
-            {
-                content.Visuals = VisualsRepo.GetVisuals(content.ID);
-                BBCode.ParseContent(content);
-            }
+            Content content = ContentRepo.GetContent(ID, currentUser.Permission == PCAuthLib.User.PermissionGroup.ADMIN);
+
+            if (content == null) return RedirectToAction("Index");
+
+            content.Visuals = VisualsRepo.GetVisuals(content.ID);
+            BBCode.ParseContent(content);
+
             viewModel.Project = content;
 
             return View(viewModel);
+        }
+
+        public ActionResult Reorder()
+        {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
+
+            ProjectListViewModel viewModel = new ProjectListViewModel();
+
+            List<Content> content =
+                ContentRepo.GetAllContent(isAdmin: currentUser.Permission == PCAuthLib.User.PermissionGroup.ADMIN);
+
+            if (content != null)
+            {
+                foreach (Content contentItem in content)
+                {
+                    BBCode.ParseContent(contentItem);
+
+                    contentItem.HeaderImg = VisualsRepo.RandomVisual(contentItem.ID);
+                }
+            }
+
+            viewModel.ContentList = content ?? new List<Content>();
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public string Reorder(string orderData)
+        {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return "";
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return "";
+
+
+            //return orderData;
+            if (String.IsNullOrEmpty(orderData)) return "";
+
+            string[] newOrder = orderData.Split(',');
+            return ContentRepo.UpdateOrder(newOrder).ToString();
         }
 
         public ActionResult Edit(int ID = 0)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
-            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index","Login");
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
             ProjectViewModel viewModel = new ProjectViewModel();
-            Content content = ContentRepo.GetContent(ID);
+            Content content = ContentRepo.GetContent(ID, currentUser.Permission == PCAuthLib.User.PermissionGroup.ADMIN);
             if (content != null)
             {
                 content.Visuals = VisualsRepo.GetVisuals(content.ID);
@@ -90,7 +135,7 @@ namespace YouriPortfolio.Controllers
                 }
             }
 
-            return RedirectToAction("Edit", new RouteValueDictionary() {{"ID", viewModel.Project.ID}});
+            return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
         }
 
         [HttpPost]
@@ -126,15 +171,15 @@ namespace YouriPortfolio.Controllers
             return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
         }
 
-        public ActionResult DeleteProject(int ID = 0)
-        {
-            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+        //public ActionResult DeleteProject(int ID = 0)
+        //{
+        //    if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
 
-            Content content = ContentRepo.GetContent(ID);
-            ProjectViewModel viewModel = new ProjectViewModel();
-            viewModel.Project = content;
-            return View(viewModel);
-        }
+        //    Content content = ContentRepo.GetContent(ID);
+        //    ProjectViewModel viewModel = new ProjectViewModel();
+        //    viewModel.Project = content;
+        //    return View(viewModel);
+        //}
         [HttpPost]
         public ActionResult DeleteProject(ProjectViewModel viewModel)
         {
@@ -143,7 +188,7 @@ namespace YouriPortfolio.Controllers
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
             if (viewModel == null) return RedirectToAction("Index");
-            Content content = ContentRepo.GetContent(viewModel.Project.ID);
+            Content content = ContentRepo.GetContent(viewModel.Project.ID, currentUser.Permission == PCAuthLib.User.PermissionGroup.ADMIN);
             if (content != null)
             {
                 if (!string.IsNullOrEmpty(viewModel.DeleteConfirmationName) && viewModel.DeleteConfirmationName == content.Title)
