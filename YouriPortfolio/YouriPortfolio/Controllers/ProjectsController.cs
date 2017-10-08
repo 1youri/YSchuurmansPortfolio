@@ -171,15 +171,17 @@ namespace YouriPortfolio.Controllers
             return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
         }
 
-        //public ActionResult DeleteProject(int ID = 0)
-        //{
-        //    if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+        public ActionResult DeleteProject(int ID = 0)
+        {
+            if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
+            if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
-        //    Content content = ContentRepo.GetContent(ID);
-        //    ProjectViewModel viewModel = new ProjectViewModel();
-        //    viewModel.Project = content;
-        //    return View(viewModel);
-        //}
+            Content content = ContentRepo.GetContent(ID);
+            ProjectViewModel viewModel = new ProjectViewModel();
+            viewModel.Project = content;
+            return View(viewModel);
+        }
         [HttpPost]
         public ActionResult DeleteProject(ProjectViewModel viewModel)
         {
