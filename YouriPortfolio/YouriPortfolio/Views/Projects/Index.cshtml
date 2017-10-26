@@ -43,9 +43,13 @@
                                     {
                                         <img src="/uploads/@content.HeaderImg.Location" alt="Project Visual" />
                                     }
-                                    else
+                                    else if(content.HeaderImg.ContentType == Visual.ContentTypes.Video)
                                     {
                                         <img src="//img.youtube.com/vi/@content.HeaderImg.Location/default.jpg" alt="Project Visual" />
+                                    }
+                                    else if (content.HeaderImg.ContentType == Visual.ContentTypes.GfyCat)
+                                    {
+                                        <img src="https://thumbs.gfycat.com/@(content.HeaderImg.Location)-size_restricted.gif"/>
                                     }
                                 }
                             </div>

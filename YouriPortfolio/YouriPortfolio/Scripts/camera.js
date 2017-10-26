@@ -687,7 +687,8 @@
 					var clone = t.clone();
 					t.remove();
 					$(imgFake).bind('click',function(){
-						if($(this).css('position')=='absolute') {
+                        if ($(this).css('position') == 'absolute') {
+                            autoplay = '';
 							$(this).remove();
 							if(cloneSrc.indexOf('vimeo') != -1 || cloneSrc.indexOf('youtube') != -1) {
 								if(cloneSrc.indexOf('?') != -1){

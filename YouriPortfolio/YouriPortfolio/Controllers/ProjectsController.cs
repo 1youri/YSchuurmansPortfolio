@@ -167,7 +167,14 @@ namespace YouriPortfolio.Controllers
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
-            VisualsRepo.InsertVisual(viewModel.Project.ID, YoutubeIDExtract.ExtractVideoIdFromUri(new Uri(viewModel.PostVideo)), Visual.ContentTypes.Video);
+            string extractedID = VideoExtract.ExtractYoutubeIdFromUri(new Uri(viewModel.PostVideo));
+            if (extractedID != null)
+                VisualsRepo.InsertVisual(viewModel.Project.ID, extractedID, Visual.ContentTypes.Video);
+            else extractedID = VideoExtract.ExtractGfyCatIdFromUri(new Uri(viewModel.PostVideo));
+
+            if (extractedID != null)
+                VisualsRepo.InsertVisual(viewModel.Project.ID, extractedID, Visual.ContentTypes.GfyCat);
+
             return RedirectToAction("Edit", new RouteValueDictionary() { { "ID", viewModel.Project.ID } });
         }
 

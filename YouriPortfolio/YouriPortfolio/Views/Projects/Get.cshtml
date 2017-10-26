@@ -24,7 +24,8 @@
                 pagination: false,
                 thumbnails: true,
                 imagePath: '/images/',
-                fx: 'simpleFade'
+                fx: 'simpleFade',
+                time: 12000
             });
 
         });
@@ -54,11 +55,18 @@
                             <div style="position: absolute; top: 5%; left: 5%; padding: 5px; width: 25%" class="fadeIn camera_effected"></div>
                         </div>
                     }
-                    if (visual.ContentType == Visual.ContentTypes.Video)
+                    else if (visual.ContentType == Visual.ContentTypes.Video)
                     {
                         <div data-thumb="//img.youtube.com/vi/@visual.Location/0.jpg" data-src="//img.youtube.com/vi/@visual.Location/default.jpg">
                             <iframe width="100%" height="100%" src="https://www.youtube.com/embed/@visual.Location" frameborder="0" allowfullscreen></iframe>
                         </div>
+                    }
+                    else if (visual.ContentType == Visual.ContentTypes.GfyCat)
+                    {
+                        <div data-thumb="https://thumbs.gfycat.com/@(visual.Location)-size_restricted.gif" data-src="/images/blank.gif">
+                            <iframe src='https://gfycat.com/ifr/@visual.Location' frameborder='0' scrolling='no' width='100%' height='100%' style='position:absolute;top:0;left:0;' allowfullscreen></iframe>
+                        </div>
+                        
                     }
                 }
             </div><!-- #camera_wrap_3 -->

@@ -226,7 +226,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Logic\BBCode.cs" />
-    <Compile Include="Logic\YoutubeIDExtract.cs" />
+    <Compile Include="Logic\VideoExtract.cs" />
     <Compile Include="Models\Account.cs" />
     <Compile Include="Models\Content.cs" />
     <Compile Include="Models\ViewModels\CVViewModel.cs" />
