@@ -13,16 +13,21 @@ namespace PermacallWebApp.Repos
             Request,
             Error
         }
-        public static bool Log(string logDestription, LogCategory category, string ip, string username)
+
+        public static bool Log(HttpContext context)
+        {
+            return Log("[" + context.Request.HttpMethod + "] " + context.Request.RawUrl, LogRepo.LogCategory.Request,context.Request.UserHostAddress);
+        }
+
+        public static bool Log(string logDestription, LogCategory category, string ip)
         {
             Dictionary<string, object> parameters = new Dictionary<string, object>()
             {
                 {"desc", logDestription},
                 {"cate", category.ToString()},
-                {"ip", ip },
-                {"username", username }
+                {"ip", ip }
             };
-            var result = DB.PFDB.InsertQuery("INSERT INTO LOG(DESCRIPTION, CATEGORY, IP, USERNAME) VALUES (?, ?, ?, ?)", parameters);
+            var result = DB.PFDB.InsertQuery("INSERT INTO LOG(DESCRIPTION, CATEGORY, IP) VALUES (?, ?, ?)", parameters);
 
             return result;
         }

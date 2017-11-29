@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using PCAuthLib;
+using PermacallWebApp.Repos;
 using YouriPortfolio.Logic;
 using YouriPortfolio.Models;
 using YouriPortfolio.Models.ViewModels;
@@ -18,6 +19,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult Index()
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
 
             ProjectListViewModel viewModel = new ProjectListViewModel();
@@ -43,6 +45,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult Get(int ID = 0)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
 
             ProjectViewModel viewModel = new ProjectViewModel();
@@ -62,6 +65,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult Reorder()
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
@@ -103,6 +107,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult Edit(int ID = 0)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
@@ -119,6 +124,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult Edit(ProjectViewModel viewModel)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
@@ -142,6 +148,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult UploadMultiple(IEnumerable<HttpPostedFileBase> files, ProjectViewModel viewModel)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
@@ -164,6 +171,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult NewVideo(ProjectViewModel viewModel)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
@@ -181,6 +189,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult DeleteProject(int ID = 0)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
@@ -193,6 +202,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult DeleteProject(ProjectViewModel viewModel)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
@@ -218,6 +228,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult DeleteVisuals(ProjectViewModel viewModel)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 

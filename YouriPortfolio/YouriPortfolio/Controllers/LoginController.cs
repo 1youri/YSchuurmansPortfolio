@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using PCAuthLib;
+using PermacallWebApp.Repos;
 using YouriPortfolio.Models;
 
 namespace YouriPortfolio.Controllers
@@ -13,6 +14,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult Index()
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
 
             Account viewModel = new Account();
 
@@ -30,6 +32,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult Index(Account account)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
 
             if (Login.GetCurrentUser(System.Web.HttpContext.Current).ID > 0) return RedirectToAction("Index", "Home");
 
@@ -54,6 +57,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult Logout()
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
 
             Account viewModel = new Account();
 
