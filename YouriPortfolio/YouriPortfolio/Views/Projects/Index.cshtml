@@ -17,12 +17,19 @@
         </div>
     }
     <script>
-        $(document).ready(function () {
+        function Masonize() {
             $('.grid').masonry({
                 itemSelector: '.grid-item', // use a separate class for itemSelector, other than .col-
                 columnWidth: '.grid-sizer',
                 percentPosition: true
             });
+        }
+
+        $(document).ready(function () {
+            Masonize();
+        });
+        $(window).load(function () {
+            Masonize();
         });
     </script>
 
