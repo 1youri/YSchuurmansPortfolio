@@ -22,9 +22,9 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
     <script src="~/Scripts/main.js"></script>
     <script src="~/Scripts/masonry.pkgd.min.js"></script>
-    
+
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    
+
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
     <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
@@ -52,33 +52,33 @@
                     @Html.LiActionLink("Projects", "Index", "Projects")
 
                     @*<li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            Projects
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            @Html.LiActionLink("DotNet C# / ASP.NET MVC", "", "")
-                            @Html.LiActionLink("Game Design", "", "")
-                            @Html.LiActionLink("HTML&CSS", "", "")
-                        </ul>
-                    </li>*@
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                Projects
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                @Html.LiActionLink("DotNet C# / ASP.NET MVC", "", "")
+                                @Html.LiActionLink("Game Design", "", "")
+                                @Html.LiActionLink("HTML&CSS", "", "")
+                            </ul>
+                        </li>*@
                     @*<li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            <i class="fa fa-user" aria-hidden="false"></i>
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            @if (currentUser.ID > 0)
-                            {
-                                <li class="text-center">@currentUser.Username</li>
-                                @Html.LiActionLink("Logout", "Logout", "Login")
-                            }
-                            else
-                            {
-                                @Html.LiActionLink("Login", "Index", "Login")
-                            }
-                        </ul>
-                    </li>*@
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                <i class="fa fa-user" aria-hidden="false"></i>
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                @if (currentUser.ID > 0)
+                                {
+                                    <li class="text-center">@currentUser.Username</li>
+                                    @Html.LiActionLink("Logout", "Logout", "Login")
+                                }
+                                else
+                                {
+                                    @Html.LiActionLink("Login", "Index", "Login")
+                                }
+                            </ul>
+                        </li>*@
 
                 </ul>
 
@@ -92,12 +92,15 @@
 
     <div class="container body-content">
         @RenderBody()
-        <br/>
-        <footer class="text-right">
-            <p>&copy; @DateTime.Now.Year - Youri Schuurmans</p>
+        <br />
+        <footer class="text-right pageFooter">
+            <p>
+                &copy; @DateTime.Now.Year - Youri Schuurmans<br />
+                v 1.2
+            </p>
         </footer>
     </div>
 
-    
+
 </body>
 </html>
