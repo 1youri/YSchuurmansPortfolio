@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Newtonsoft.Json;
 using PCAuthLib;
+using PermacallWebApp.Repos;
 using YouriPortfolio.Logic;
 using YouriPortfolio.Models;
 using YouriPortfolio.Repos;
@@ -17,6 +18,8 @@ namespace YouriPortfolio.Controllers
         public ActionResult Index()
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
+
 
             CVViewModel viewModel = ContentRepo.GetCV();
             if(viewModel == null) return View(new CVViewModel());
@@ -30,6 +33,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult Edit()
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
@@ -54,6 +58,7 @@ namespace YouriPortfolio.Controllers
         public ActionResult Edit(CVViewModel viewModel)
         {
             if (!Login.ForceHTTPSConnection(System.Web.HttpContext.Current, true)) return new EmptyResult();
+            LogRepo.Log(System.Web.HttpContext.Current);
             var currentUser = Login.GetCurrentUser(System.Web.HttpContext.Current);
             if (currentUser.Permission < PCAuthLib.User.PermissionGroup.ADMIN) return RedirectToAction("Index", "Login");
 
