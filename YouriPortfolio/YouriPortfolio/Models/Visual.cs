@@ -19,7 +19,8 @@ namespace YouriPortfolio.Models
         public enum ContentTypes
         {
             Photo = 0 ,
-            Video = 1
+            Video = 1,
+            GfyCat = 2
         }
 
         public int ID { get; set; }

@@ -13,7 +13,7 @@
 
 .noLink {
     text-decoration: none;
-    color: black;
+    color: #333;
 }
 
 h1 {
@@ -36,6 +36,11 @@ h4 {
     font-style: italic;
     font-size: 1em;
     margin-bottom: 0px;
+    color: #696969;
+}
+
+.pageFooter{
+    font-size: 0.9em;
     color: #696969;
 }
 

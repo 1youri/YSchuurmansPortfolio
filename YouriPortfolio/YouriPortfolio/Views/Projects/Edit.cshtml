@@ -170,9 +170,13 @@
                                                         {
                                                             <img src="/uploads/@Model.Project.Visuals[i].Location" />
                                                         }
-                                                        else
+                                                        else if(Model.Project.Visuals[i].ContentType == Visual.ContentTypes.Video)
                                                         {
                                                             <img src="//img.youtube.com/vi/@Model.Project.Visuals[i].Location/default.jpg" />
+                                                        }
+                                                        else if (Model.Project.Visuals[i].ContentType == Visual.ContentTypes.GfyCat)
+                                                        {
+                                                            <img src="https://thumbs.gfycat.com/@(Model.Project.Visuals[i].Location)-size_restricted.gif"/>
                                                         }
                                                     </div>
                                                 </div>
