@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace YouriPortfolio.Models
 {
@@ -26,7 +27,9 @@ namespace YouriPortfolio.Models
 
         public int ID { get; set; }
         public string Title { get; set; }
+        [AllowHtml]
         public string ShortContent { get; set; }
+        [AllowHtml]
         public string ContentText { get; set; }
         public Visual HeaderImg { get; set; }
         public List<Visual> Visuals { get; set; }
